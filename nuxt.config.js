@@ -26,10 +26,10 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [],
+  buildModules: ["@nuxtjs/tailwindcss"],
 
   router: {
-    middleware: ["auth"]
+    // middleware: ["auth"]
   },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -73,7 +73,7 @@ export default {
       options: {
         expires: 1
       }
-    },
+    }
     // watchLoggedIn: true,
   },
 

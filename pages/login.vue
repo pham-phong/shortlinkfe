@@ -31,9 +31,14 @@
         <form class="sign-up">
           <h2>Create login</h2>
           <div>Use your email for registration</div>
-          <input type="text" placeholder="Name" />
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
+          <input v-model="formSignUp.username" type="text" placeholder="Name" />
+          <input v-model="formSignUp.email" type="email" placeholder="Email" />
+          <input
+            v-model="formSignUp.password"
+            type="password"
+            autocomplete="on"
+            placeholder="Password"
+          />
           <button @click.prevent="userSignUp">Sign Up</button>
         </form>
         <form class="sign-in">
@@ -42,6 +47,7 @@
           <input type="email" v-model="formSignIn.email" placeholder="Email" />
           <input
             type="password"
+            autocomplete="on"
             v-model="formSignIn.password"
             placeholder="Password"
           />
@@ -55,7 +61,6 @@
 
 <script>
 import Cookie from "js-cookie";
-
 export default {
   auth: "guest",
   layout: "default",
@@ -69,28 +74,39 @@ export default {
         password: ""
       },
       formSignUp: {
-        name: "",
+        username: "",
         email: "",
         password: ""
-      }
+      },
+      error:""
     };
   },
   methods: {
     async userLogin() {
       try {
-        const { response } = await this.$auth.loginWith("local", {
+        const { data } = await this.$auth.loginWith("local", {
           data: this.formSignIn
         });
-        Cookie.set("access_token", response.token, { expires: 1 });
+        Cookie.set("access_token", data.token, { expires: 1 });
         this.$router.push(this.localePath({ path: "/" }));
+
+        // const { data } = await this.$axios.post("/login", this.formSignIn);
+        // await this.$auth.setToken("local", "Bearer " + data.token);
+        // await this.$auth.setRefreshToken("local", data.refresh_token);
+        // await this.$auth.setUserToken(data.token);
       } catch (err) {
         console.log("error", err);
-        this.error = err.response;
+        this.error = err;
       }
     },
-    userSignUp() {
-      console.log("login", this.$auth);
-      console.log("user", this.$store);
+    async userSignUp() {
+      try {
+        const { data } = await this.$axios.post("/register", this.formSignUp);
+        return data;
+      } catch (err) {
+        console.log("error", err);
+        this.error = err;
+      }
     }
   }
 };
