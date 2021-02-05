@@ -1,4 +1,5 @@
 export default {
+  ssr: false,
   env: {
     API_URL: process.env.API_URL
   },
@@ -29,7 +30,7 @@ export default {
   buildModules: ["@nuxtjs/tailwindcss"],
 
   router: {
-    // middleware: ["auth"]
+    middleware: ["auth"]
   },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -73,8 +74,8 @@ export default {
       options: {
         expires: 1
       }
-    }
-    // watchLoggedIn: true,
+    },
+    watchLoggedIn: true
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)

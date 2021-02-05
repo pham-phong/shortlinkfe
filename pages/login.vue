@@ -78,26 +78,18 @@ export default {
         email: "",
         password: ""
       },
-      error:""
+      error: []
     };
   },
+  // created() {
+  //   this.getUser();
+  // },
   methods: {
     async userLogin() {
-      try {
-        const { data } = await this.$auth.loginWith("local", {
-          data: this.formSignIn
-        });
-        Cookie.set("access_token", data.token, { expires: 1 });
-        this.$router.push(this.localePath({ path: "/" }));
-
-        // const { data } = await this.$axios.post("/login", this.formSignIn);
-        // await this.$auth.setToken("local", "Bearer " + data.token);
-        // await this.$auth.setRefreshToken("local", data.refresh_token);
-        // await this.$auth.setUserToken(data.token);
-      } catch (err) {
-        console.log("error", err);
-        this.error = err;
-      }
+      await this.$auth.loginWith("local", {
+        data: this.formSignIn
+      });
+      this.$router.push({ path: "/" });
     },
     async userSignUp() {
       try {
@@ -108,6 +100,15 @@ export default {
         this.error = err;
       }
     }
+    // async getUser() {
+    //   try {
+    //     const { data } = await this.$axios.get("/auth/user");
+    //     return data;
+    //   } catch (err) {
+    //     console.log("error", err);
+    //     this.error = err;
+    //   }
+    // }
   }
 };
 </script>
