@@ -81,15 +81,18 @@ export default {
       error: []
     };
   },
-  // created() {
-  //   this.getUser();
-  // },
   methods: {
     async userLogin() {
-      await this.$auth.loginWith("local", {
-        data: this.formSignIn
-      });
-      this.$router.push({ path: "/" });
+      try {
+        const { data } = await this.$auth.loginWith("local", {
+          data: this.formSignIn
+        });
+        Cookie.set("access_token", data.token, { expires: 1 });
+        this.$router.push({ path: "/" });
+      } catch (err) {
+        console.log("error", err);
+        this.error = err;
+      }
     },
     async userSignUp() {
       try {
@@ -100,15 +103,6 @@ export default {
         this.error = err;
       }
     }
-    // async getUser() {
-    //   try {
-    //     const { data } = await this.$axios.get("/auth/user");
-    //     return data;
-    //   } catch (err) {
-    //     console.log("error", err);
-    //     this.error = err;
-    //   }
-    // }
   }
 };
 </script>

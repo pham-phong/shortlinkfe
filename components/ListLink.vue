@@ -6,7 +6,7 @@
       <thead>
         <tr>
           <th class="border border-green-600">ID</th>
-          <th class="border border-green-600">Code</th>
+          <th class="border border-green-600">Short Link</th>
           <th class="border border-green-600">Link</th>
           <th class="border border-green-600">Click</th>
           <th class="border border-green-600">Create</th>
@@ -17,12 +17,14 @@
           <td class="border border-green-600">{{ item.id }}</td>
           <td class="border border-green-600">
             <a
-              class="text-blue-500 underline"
+              class="text-blue-500 underline cursor-pointer"
               @click="handelRedirect(item.code)"
               >{{ item.code }}
             </a>
           </td>
-          <td class="border border-green-600">{{ item.link }}</td>
+          <td class="border border-green-600 cursor-not-allowed">
+            {{ item.link }}
+          </td>
           <td class="border border-green-600">{{ item.click }}</td>
           <td class="border border-green-600">{{ item.created_at }}</td>
         </tr>
@@ -40,7 +42,6 @@ export default {
   },
   created() {
     this.fetchData();
-    console.log(this.$auth);
   },
   methods: {
     fetchData() {

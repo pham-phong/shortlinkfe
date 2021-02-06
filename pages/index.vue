@@ -8,6 +8,6 @@
 import ListLink from "@/components/ListLink.vue";
 export default {
   components: { ListLink },
-  layout: "default"
+  layout: "auth"
 };
 </script>
