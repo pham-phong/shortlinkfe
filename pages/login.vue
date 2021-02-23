@@ -52,7 +52,7 @@
             placeholder="Password"
           />
           <a href="#">Forgot your password?</a>
-          <button @click.prevent="userLogin">Sign In</button>
+          <button @click.prevent="userSignIn">Sign In</button>
         </form>
       </div>
     </article>
@@ -82,7 +82,7 @@ export default {
     };
   },
   methods: {
-    async userLogin() {
+    async userSignIn() {
       try {
         const { data } = await this.$auth.loginWith("local", {
           data: this.formSignIn
@@ -97,6 +97,8 @@ export default {
     async userSignUp() {
       try {
         const { data } = await this.$axios.post("/register", this.formSignUp);
+        console.log("🚀 ~ dang ky thanh cong", data);
+        this.formSwitch = false;
         return data;
       } catch (err) {
         console.log("error", err);
