@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in links" :key="item.id">
+        <tr v-for="item in links.data" :key="item.id">
           <td class="border border-green-600">{{ item.id }}</td>
           <td class="border border-green-600">
             <a
@@ -30,28 +30,51 @@
         </tr>
       </tbody>
     </table>
+
+    <Pagination v-if="links" :paginate="links.meta" @page="onChangePage" />
   </div>
 </template>
 <script>
+import Pagination from "@/components/Pagination";
 export default {
   name: "listLink",
+  components: {
+    Pagination
+  },
   data() {
     return {
-      links: ""
+      links: "",
+      limit: "",
+      type: {
+        type: String,
+        default: null
+      }
     };
   },
   created() {
     this.fetchData();
   },
   methods: {
-    fetchData() {
-      this.getLinks().then(res => {
-        this.links = res;
-      });
+    async fetchData(page) {
+      const params = {
+        page: page || 1,
+        limit: 5
+      };
+
+      const { data } = await this.getLinks(params);
+
+      this.links = data;
+      console.log(
+        "🚀 ~ file: ListLink.vue ~ line 70 ~ fetchData ~ this.links",
+        this.links
+      );
     },
-    async getLinks() {
-      const { data } = await this.$axios.get("/get-shortlink");
+    async getLinks(params = {}) {
+      const data = await this.$axios.get("/get-pagination", { params });
       return data;
+    },
+    onChangePage(page) {
+      this.fetchData(page);
     },
     async handelRedirect(code) {
       const { data } = await this.$axios.get(`/${code}`);
